@@ -19,11 +19,11 @@ import {
   topRatedMovies,
   baseImagePath,
 } from '../api/apicalls';
-import InputHeader from '../components/InputHeader';
 import CategoryHeader from '../components/CategoryHeader';
 import SubMovieCard from '../components/SubMovieCard';
 import MovieCard from '../components/MovieCard';
 import CustomIcon from '../components/CustomIcon';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const { width, height } = Dimensions.get('window');
 
 const getNowPlayingMoviesList = async () => {
@@ -135,13 +135,11 @@ const HomeScreen = ({ navigation }: any) => {
     <ScrollView style={styles.container} bounces={false}>
       <StatusBar hidden />
 
-      {/* <View style={styles.InputHeaderContainer}>
-        <InputHeader searchFunction={searchMoviesFunction} />
-      </View> */}
-    
       <View style={styles.appHeaderContainer}>
         <Image source={require('../assets/image/logo-app.png')} style={styles.logo} />
-        <CustomIcon name='video' color={COLORS.White} size={40} />
+        <TouchableOpacity>
+          <AntDesign name='hearto' size={35} color={COLORS.White} />
+        </TouchableOpacity>
       </View>
 
       <CategoryHeader title={'Đang chiếu'} />

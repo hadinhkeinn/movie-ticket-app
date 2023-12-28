@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
+import { Text, View, StyleSheet, Image } from 'react-native';
 import {
   BORDERRADIUS,
   COLORS,
@@ -7,7 +7,6 @@ import {
   FONTSIZE,
   SPACING,
 } from '../theme/theme';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const CastCard = (props: any) => {
   return (
@@ -16,16 +15,16 @@ const CastCard = (props: any) => {
         styles.container,
         props.shouldMarginatedAtEnd
           ? props.isFirst
-            ? {marginLeft: SPACING.space_24}
+            ? { marginLeft: SPACING.space_24 }
             : props.isLast
-            ? {marginRight: SPACING.space_24}
-            : {}
+              ? { marginRight: SPACING.space_24 }
+              : {}
           : {},
-        {maxWidth: props.cardWidth},
+        { maxWidth: props.cardWidth },
       ]}>
       <Image
-        source={{uri: props.imagePath}}
-        style={[styles.cardImage, {width: props.cardWidth}]}
+        source={{ uri: props.imagePath }}
+        style={[styles.cardImage, { width: props.cardWidth }]}
       />
       <Text style={styles.title} numberOfLines={1}>
         {props.title}
