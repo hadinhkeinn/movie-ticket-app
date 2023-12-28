@@ -3,10 +3,11 @@
 >**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
 
 ## Thành viên nhóm
-Họ tên        | MSSV 
-------------- | -------------
-Hà Đinh Kiên  | 21522244
-Dương Công Hiếu  | 21522068
+Họ tên          | MSSV 
+-------------   | -------------
+Hà Đinh Kiên    | 21522244
+Dương Công Hiếu | 21522068
+Lê Minh Quang   | 20520718
 
 ## Step 1: Start the Metro Server
 

@@ -16,7 +16,7 @@ import {
   Keyboard,
   Dimensions,
 } from 'react-native';
-import { baseImagePath, movieCastDetails, movieDetails, movieTrailer } from '../api/apicalls';
+import { baseImagePath, movieCastDetails, movieDetails, movieTrailer, movieReviews } from '../api/apicalls';
 import {
   BORDERRADIUS,
   COLORS,
@@ -29,6 +29,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomIcon from '../components/CustomIcon';
 import CategoryHeader from '../components/CategoryHeader';
 import CastCard from '../components/CastCard';
+import CommentCard from '../components/CommentCard';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import YoutubePlayer from 'react-native-youtube-iframe';
 
@@ -65,10 +66,21 @@ const getMovieTrailer = async (movieid: number) => {
   }
 };
 
+const getMovieReviews = async (movieid: number) => {
+  try {
+    let response = await fetch(movieReviews(movieid));
+    let json = await response.json();
+    return json;
+  } catch (error) {
+    console.error('Something Went wrong in getMoviesReviews Function', error);
+  }
+};
+
 const MovieDetailsScreen = ({ navigation, route }: any) => {
   const [movieData, setMovieData] = useState<any>(undefined);
   const [movieCastData, setmovieCastData] = useState<any>(undefined);
   const [movieTrailer, setMovieTrailer] = useState<any>(undefined);
+  const [movieReviews, setMovieReviews] = useState<any>(undefined);
   const [modalTrailer, setModalTrailer] = useState<any>(false);
   const [playing, setPlaying] = useState(false);
   const { width } = Dimensions.get('window');
@@ -88,12 +100,17 @@ const MovieDetailsScreen = ({ navigation, route }: any) => {
       const tempMovieTrailer = await getMovieTrailer(route.params.movieid);
       setMovieTrailer(tempMovieTrailer.results[0]);
     })();
+
+    (async () => {
+      const tempMovieReviews = await getMovieReviews(route.params.movieid);
+      setMovieReviews(tempMovieReviews.results);
+    })();
   }, []);
 
   const onStateChange = useCallback((state: any) => {
     if (state === "ended") {
       setPlaying(false);
-      Alert.alert("video has finished playing!");
+      console.log("video has finished playing!");
     }
   }, []);
 
@@ -138,35 +155,35 @@ const MovieDetailsScreen = ({ navigation, route }: any) => {
 
         <View>
           <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalTrailer}
-          onRequestClose={() => {
-            setModalTrailer(!modalTrailer);
-          }}>
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={styles.centeredView}>
-              <View style={styles.modalView}>
-                <View style={{ flexDirection: 'row', gap: 20, paddingTop: 10, justifyContent: 'flex-end' }}>
-                  <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => setModalTrailer(!modalTrailer)}>
-                    <AntDesign name="closecircle" size={24} color={COLORS.Green} />
-                  </TouchableOpacity>
-                </View>
-                <View>
-                  <YoutubePlayer
-                    width={width - 40}
-                    height={width / 1.8}
-                    play={playing}
-                    videoId={movieTrailer?.key}
-                    onChangeState={onStateChange}
-                  />
+            animationType="slide"
+            transparent={true}
+            visible={modalTrailer}
+            onRequestClose={() => {
+              setModalTrailer(!modalTrailer);
+            }}>
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <View style={{ flexDirection: 'row', gap: 20, paddingTop: 10, justifyContent: 'flex-end' }}>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => setModalTrailer(!modalTrailer)}>
+                      <AntDesign name="closecircle" size={24} color={COLORS.Green} />
+                    </TouchableOpacity>
+                  </View>
+                  <View>
+                    <YoutubePlayer
+                      width={width - 40}
+                      height={width / 1.8}
+                      play={playing}
+                      videoId={movieTrailer?.key}
+                      onChangeState={onStateChange}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
+            </TouchableWithoutFeedback>
+          </Modal>
           <ImageBackground
             source={{
               uri: baseImagePath('w780', movieData?.backdrop_path),
@@ -273,7 +290,40 @@ const MovieDetailsScreen = ({ navigation, route }: any) => {
               />
             )}
           />
+        </View>
 
+        <View>
+          <CategoryHeader title={`Đánh giá (${movieReviews?.length})`} />
+          {/* <FlatList
+            data={movieReviews}
+            keyExtractor={(item: any) => item.id}
+            bounces={false}
+            horizontal={false}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ gap: 0 }}
+            decelerationRate="fast"
+            renderItem={({ item, index }) => (
+              <CommentCard
+                cardWidth={width}
+                name={item.author}
+                rating={item.author_details.rating}
+                imagePath={item.author_details.avatar_path}
+                content={item.content}
+              />
+            )}
+          /> */}
+          {movieReviews?.map((item: any, index: any) => {
+            return (
+              <CommentCard
+                key={index}
+                cardWidth={width}
+                name={item.author}
+                rating={item.author_details.rating}
+                imagePath={item.author_details.avatar_path}
+                content={item.content}
+              />
+            );
+          })}
         </View>
       </ScrollView>
     );

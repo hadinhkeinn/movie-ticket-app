@@ -18,3 +18,6 @@ export const movieCastDetails = (id: number) => {
 export const movieTrailer = (id: number) => {
   return `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apikey}&&language=en-US`;
 }
+export const movieReviews = (id: number) => {
+  return `https://api.themoviedb.org/3/movie/${id}/reviews?api_key=${apikey}`
+}
