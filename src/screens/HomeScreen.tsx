@@ -108,13 +108,13 @@ const HomeScreen = ({ navigation }: any) => {
   };
 
   if (
-    nowPlayingMoviesList == undefined &&
-    nowPlayingMoviesList == null &&
-    popularMoviesList == undefined &&
-    popularMoviesList == null &&
-    upcomingMoviesList == undefined &&
-    upcomingMoviesList == null &&
-    topRatedMoviesList == undefined &&
+    nowPlayingMoviesList == undefined ||
+    nowPlayingMoviesList == null ||
+    popularMoviesList == undefined ||
+    popularMoviesList == null ||
+    upcomingMoviesList == undefined ||
+    upcomingMoviesList == null ||
+    topRatedMoviesList == undefined ||
     topRatedMoviesList == null
   ) {
     return (

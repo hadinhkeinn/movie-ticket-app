@@ -119,12 +119,14 @@ const MovieDetailsScreen = ({ navigation, route }: any) => {
   }, []);
 
   if (
-    movieData == undefined &&
-    movieData == null &&
-    movieCastData == undefined &&
-    movieCastData == null &&
-    movieTrailer == undefined &&
-    movieTrailer == null
+    movieData == undefined ||
+    movieData == null ||
+    movieCastData == undefined ||
+    movieCastData == null ||
+    movieTrailer == undefined ||
+    movieTrailer == null ||
+    movieReviews == undefined ||
+    movieReviews == null
   ) {
     return (
       <ScrollView
@@ -132,13 +134,6 @@ const MovieDetailsScreen = ({ navigation, route }: any) => {
         contentContainerStyle={styles.scrollViewContainer}
         bounces={false}
         showsVerticalScrollIndicator={false}>
-        <View style={styles.appHeaderContainer}>
-          <AppHeader
-            name="close"
-            header={''}
-            action={() => navigation.goBack()}
-          />
-        </View>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size={'large'} color={COLORS.Green} />
         </View>
@@ -294,24 +289,7 @@ const MovieDetailsScreen = ({ navigation, route }: any) => {
 
         <View>
           <CategoryHeader title={`Đánh giá (${movieReviews?.length})`} />
-          {/* <FlatList
-            data={movieReviews}
-            keyExtractor={(item: any) => item.id}
-            bounces={false}
-            horizontal={false}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ gap: 0 }}
-            decelerationRate="fast"
-            renderItem={({ item, index }) => (
-              <CommentCard
-                cardWidth={width}
-                name={item.author}
-                rating={item.author_details.rating}
-                imagePath={item.author_details.avatar_path}
-                content={item.content}
-              />
-            )}
-          /> */}
+
           {movieReviews?.map((item: any, index: any) => {
             return (
               <CommentCard
@@ -430,6 +408,8 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_light,
     fontSize: FONTSIZE.size_14,
     color: COLORS.White,
+    marginTop: 8,
+    textAlign: 'justify',
   },
   containerGap24: {
     gap: SPACING.space_24,
