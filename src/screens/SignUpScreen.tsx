@@ -4,15 +4,16 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import Auth from '../firebase/auth';
 
 
 const { width, height } = Dimensions.get('window');
 
 const SignUpScreen = () => {
+    const [fullname, setFullname] = useState('');
     const [email, setEmal] = useState('');
     const [password, setPassword] = useState('');
     const [phone, setPhone] = useState('');
-    const [address, setAddress] = useState('');
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
 
@@ -48,6 +49,12 @@ const SignUpScreen = () => {
                         </View>
                         <TextInput
                             style={styles.input}
+                            placeholder='Họ và tên'
+                            onChangeText={(text) => setFullname(text)}
+                            value={fullname}
+                        ></TextInput>
+                        <TextInput
+                            style={styles.input}
                             placeholder='Email'
                             onChangeText={(text) => setEmal(text)}
                             value={email}
@@ -69,15 +76,8 @@ const SignUpScreen = () => {
                             keyboardType='numeric'
                         >
                         </TextInput>
-                        <TextInput
-                            style={styles.input}
-                            placeholder='Địa chỉ'
-                            onChangeText={(text) => setAddress(text)}
-                            value={address}
-                        >
-                        </TextInput>
 
-                        <TouchableOpacity style={styles.loginBtn} onPress={() => {}}>
+                        <TouchableOpacity style={styles.loginBtn} onPress={() => {Auth.signUp(email, password, fullname)}}>
                             <Text style={{ ...styles.Text, color: 'white', fontSize: 18 }}>
                                 ĐĂNG KÝ
                             </Text>

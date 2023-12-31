@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, StatusBar, Image, ScrollView} from 'react-native';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
+import { Text, View, StyleSheet, StatusBar, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
 import AppHeader from '../components/AppHeader';
 import SettingComponent from '../components/SettingComponent';
+import Auth from '../firebase/auth';
 
-const UserAccountScreen = ({navigation}: any) => {
+const UserAccountScreen = ({ navigation }: any) => {
   return (
     <ScrollView style={styles.container}>
       <StatusBar hidden />
@@ -49,6 +50,9 @@ const UserAccountScreen = ({navigation}: any) => {
           subheading="Phim"
           subtitle="Xem thêm"
         />
+        <TouchableOpacity style={styles.logOutBtn} onPress={() => { Auth.signOut() }}>
+          <Text style={styles.textLogout}>Đăng xuất</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -77,6 +81,18 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_medium,
     fontSize: FONTSIZE.size_16,
     marginTop: SPACING.space_16,
+    color: COLORS.White,
+  },
+  logOutBtn: {
+    backgroundColor: COLORS.Orange,
+    paddingVertical: SPACING.space_16,
+    paddingHorizontal: SPACING.space_36,
+    borderRadius: SPACING.space_16,
+    marginTop: SPACING.space_36,
+  },
+  textLogout: {
+    fontFamily: FONTFAMILY.poppins_medium,
+    fontSize: FONTSIZE.size_16,
     color: COLORS.White,
   },
 });

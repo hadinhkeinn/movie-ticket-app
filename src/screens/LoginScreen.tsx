@@ -1,31 +1,13 @@
 import { Alert, View, Image, Text, TextInput, StyleSheet, ActivityIndicator, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Dimensions, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { COLORS, FONTFAMILY } from '../theme/theme';
-import '@react-native-firebase/app';
-import { firebase } from '@react-native-firebase/firestore';
-
-
+import Auth from '../firebase/auth';
 const { width, height } = Dimensions.get('window');
 
 const LoginScreen = ({ navigation }: any) => {
     const [email, setEmal] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const ref = firebase.firestore().collection('users');
-    
-    useEffect(() => {
-        const subscriber = ref.onSnapshot(querySnapshot => {
-            const users: any = [];
-            querySnapshot.forEach(documentSnapshot => {
-                users.push({
-                    key: documentSnapshot.id,
-                    ...documentSnapshot.data(),
-                });
-            });
-            console.log(users);
-        });
-        return () => subscriber();
-    }, []);
 
     if (loading) return (
         <View style={{ ...styles.container, justifyContent: 'center', alignItems: 'center' }}>
@@ -47,7 +29,7 @@ const LoginScreen = ({ navigation }: any) => {
                         </View>
                         <TextInput
                             style={styles.input}
-                            placeholder='Tên đăng nhập'
+                            placeholder='Email'
                             onChangeText={(text) => setEmal(text)}
                             value={email}
                         >
@@ -61,7 +43,7 @@ const LoginScreen = ({ navigation }: any) => {
                         >
                         </TextInput>
 
-                        <TouchableOpacity style={styles.loginBtn} onPress={() => { navigation.push('Main') }}>
+                        <TouchableOpacity style={styles.loginBtn} onPress={() => { Auth.signIn(email, password) }}>
                             <Text style={{ ...styles.Text, color: 'white', fontSize: 18 }}>
                                 ĐĂNG NHẬP
                             </Text>
