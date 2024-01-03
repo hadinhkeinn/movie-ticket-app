@@ -11,7 +11,6 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<any>(null);
-
   const onAuthStateChange = (user: any) => {
     setUser(user);
     if (initializing) setInitializing(false);

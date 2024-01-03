@@ -5,7 +5,15 @@ import AppHeader from '../components/AppHeader';
 import SettingComponent from '../components/SettingComponent';
 import Auth from '../firebase/auth';
 
+
 const UserAccountScreen = ({ navigation }: any) => {
+  const [user, setUser] = React.useState<any>(null);
+  React.useEffect(() => {
+    (async () => {
+      const tmpUser = await Auth.getCurrentUser();
+      setUser(tmpUser);
+    })();
+  }, []);
   return (
     <ScrollView style={styles.container}>
       <StatusBar hidden />
@@ -22,7 +30,7 @@ const UserAccountScreen = ({ navigation }: any) => {
           source={require('../assets/image/logo-og.png')}
           style={styles.avatarImage}
         />
-        <Text style={styles.avatarText}>Dinh Kien</Text>
+        <Text style={styles.avatarText}>{user?.displayName}</Text>
       </View>
 
       <View style={styles.profileContainer}>
@@ -31,6 +39,7 @@ const UserAccountScreen = ({ navigation }: any) => {
           heading="Tài khoản"
           subheading="Chỉnh sửa"
           subtitle="Đổi mật khẩu"
+          onPress={() => navigation.navigate('EditProfile')}
         />
         <SettingComponent
           icon="setting"

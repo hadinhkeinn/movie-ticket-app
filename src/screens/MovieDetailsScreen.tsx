@@ -256,6 +256,7 @@ const MovieDetailsScreen = ({ navigation, route }: any) => {
             style={styles.buttonBG}
             onPress={() => {
               navigation.push('SeatBooking', {
+                MovieID: route.params.movieid,
                 BgImage: baseImagePath('w780', movieData.backdrop_path),
                 PosterImage: baseImagePath('original', movieData.poster_path),
               });

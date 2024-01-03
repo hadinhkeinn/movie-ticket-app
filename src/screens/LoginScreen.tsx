@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }: any) => {
                 <View style={styles.container}>
                     <KeyboardAvoidingView behavior='padding'>
                         <View style={{ marginTop: 50, alignItems: 'center' }}>
-                            <Image source={require('../assets/image/logo-app.png')} style={{ width: width / 3, height: width / 3, borderRadius: 100 }} />
+                            <Image source={require('../assets/image/logo-app.jpg')} style={{ width: width / 3, height: width / 3, borderRadius: 100 }} />
                         </View>
                         <View style={{ paddingTop: 20, paddingBottom: 15 }}>
                             <Text style={styles.Text}>
@@ -43,7 +43,12 @@ const LoginScreen = ({ navigation }: any) => {
                         >
                         </TextInput>
 
-                        <TouchableOpacity style={styles.loginBtn} onPress={() => { Auth.signIn(email, password) }}>
+                        <TouchableOpacity
+                            style={styles.loginBtn}
+                            onPress={() => {
+                                Auth.signIn(email, password);
+                            }}
+                        >
                             <Text style={{ ...styles.Text, color: 'white', fontSize: 18 }}>
                                 ĐĂNG NHẬP
                             </Text>

@@ -136,7 +136,7 @@ const HomeScreen = ({ navigation }: any) => {
       <StatusBar hidden />
 
       <View style={styles.appHeaderContainer}>
-        <Image source={require('../assets/image/logo-app.png')} style={styles.logo} />
+        <Image source={require('../assets/image/logo-app.jpg')} style={styles.logo} />
         <TouchableOpacity>
           <AntDesign name='hearto' size={35} color={COLORS.White} />
         </TouchableOpacity>

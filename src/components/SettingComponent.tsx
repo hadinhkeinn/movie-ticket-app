@@ -1,6 +1,6 @@
 import * as React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
-import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/theme';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { COLORS, FONTFAMILY, FONTSIZE, SPACING } from '../theme/theme';
 import CustomIcon from './CustomIcon';
 
 const SettingComponent = (props: any) => {
@@ -15,7 +15,9 @@ const SettingComponent = (props: any) => {
         <Text style={styles.subtitle}>{props.subtitle}</Text>
       </View>
       <View style={styles.iconBG}>
-        <CustomIcon name={'arrow-right'} style={styles.iconStyle} />
+        <TouchableOpacity onPress={props.onPress}>
+          <CustomIcon name={'arrow-right'} style={styles.iconStyle} />
+        </TouchableOpacity>
       </View>
     </View>
   );

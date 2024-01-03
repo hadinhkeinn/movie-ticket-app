@@ -37,7 +37,7 @@ const SignUpScreen = () => {
                             </View>
                         </View>
                         <View style={{ alignItems: 'center' }}>
-                            <Image source={require('../assets/image/logo-app.png')} style={{ width: width / 3, height: width / 3, borderRadius: 100}} />
+                            <Image source={require('../assets/image/logo-app.jpg')} style={{ width: width / 3, height: width / 3, borderRadius: 100 }} />
                         </View>
                         <View>
 
@@ -66,6 +66,7 @@ const SignUpScreen = () => {
                             onChangeText={(text) => setPassword(text)}
                             value={password}
                             textContentType='password'
+                            secureTextEntry
                         >
                         </TextInput>
                         <TextInput
@@ -77,7 +78,7 @@ const SignUpScreen = () => {
                         >
                         </TextInput>
 
-                        <TouchableOpacity style={styles.loginBtn} onPress={() => {Auth.signUp(email, password, fullname)}}>
+                        <TouchableOpacity style={styles.loginBtn} onPress={() => { Auth.signUp(email, password, fullname, phone) }}>
                             <Text style={{ ...styles.Text, color: 'white', fontSize: 18 }}>
                                 ĐĂNG KÝ
                             </Text>
