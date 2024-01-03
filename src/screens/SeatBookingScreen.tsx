@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -20,7 +20,9 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import AppHeader from '../components/AppHeader';
 import CustomIcon from '../components/CustomIcon';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import Auth from '../firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+
 
 const timeArray: string[] = [
   '10:30',
@@ -33,7 +35,7 @@ const timeArray: string[] = [
 
 const generateDate = () => {
   const date = new Date();
-  let weekday = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  let weekday = ['CN', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
   let weekdays = [];
   for (let i = 0; i < 7; i++) {
     let tempDate = {
@@ -77,7 +79,7 @@ const generateSeats = () => {
   return rowArray;
 };
 
-const SeatBookingScreen = ({navigation, route}: any) => {
+const SeatBookingScreen = ({ navigation, route }: any) => {
   const [dateArray, setDateArray] = useState<any[]>(generateDate());
   const [selectedDateIndex, setSelectedDateIndex] = useState<any>();
   const [price, setPrice] = useState<number>(0);
@@ -112,15 +114,16 @@ const SeatBookingScreen = ({navigation, route}: any) => {
       dateArray[selectedDateIndex] !== undefined
     ) {
       try {
-        await EncryptedStorage.setItem(
-          'ticket',
-          JSON.stringify({
-            seatArray: selectedSeatArray,
-            time: timeArray[selectedTimeIndex],
-            date: dateArray[selectedDateIndex],
-            ticketImage: route.params.PosterImage,
-          }),
-        );
+        await firestore().collection('user_ticket')
+          .doc(Auth.getCurrentUser()?.uid).set({
+            ticket: JSON.stringify({
+              movieId: route.params.MovieID,
+              seatArray: selectedSeatArray,
+              time: timeArray[selectedTimeIndex],
+              date: dateArray[selectedDateIndex],
+              ticketImage: route.params.PosterImage,
+            }),
+          })
       } catch (error) {
         console.error(
           'Something went Wrong while storing in BookSeats Functions',
@@ -128,6 +131,7 @@ const SeatBookingScreen = ({navigation, route}: any) => {
         );
       }
       navigation.navigate('Ticket', {
+        movieId: route.params.MovieID,
         seatArray: selectedSeatArray,
         time: timeArray[selectedTimeIndex],
         date: dateArray[selectedDateIndex],
@@ -135,7 +139,7 @@ const SeatBookingScreen = ({navigation, route}: any) => {
       });
     } else {
       ToastAndroid.showWithGravity(
-        'Please Select Seats, Date and Time of the Show',
+        'Vui lòng chọn ghế, ngày và giờ',
         ToastAndroid.SHORT,
         ToastAndroid.BOTTOM,
       );
@@ -150,7 +154,7 @@ const SeatBookingScreen = ({navigation, route}: any) => {
       <StatusBar hidden />
       <View>
         <ImageBackground
-          source={{uri: route.params?.BgImage}}
+          source={{ uri: route.params?.BgImage }}
           style={styles.ImageBG}>
           <LinearGradient
             colors={[COLORS.BlackRGB10, COLORS.Grey]}
@@ -183,8 +187,8 @@ const SeatBookingScreen = ({navigation, route}: any) => {
                         name="seat"
                         style={[
                           styles.seatIcon,
-                          subitem.taken ? {color: COLORS.Black} : {},
-                          subitem.selected ? {color: COLORS.Green} : {},
+                          subitem.taken ? { color: COLORS.Black } : {},
+                          subitem.selected ? { color: COLORS.Green } : {},
                         ]}
                       />
                     </TouchableOpacity>
@@ -202,14 +206,14 @@ const SeatBookingScreen = ({navigation, route}: any) => {
           <View style={styles.radioContainer}>
             <CustomIcon
               name="radio"
-              style={[styles.radioIcon, {color: COLORS.Black}]}
+              style={[styles.radioIcon, { color: COLORS.Black }]}
             />
             <Text style={styles.radioText}>Đã đặt</Text>
           </View>
           <View style={styles.radioContainer}>
             <CustomIcon
               name="radio"
-              style={[styles.radioIcon, {color: COLORS.Green}]}
+              style={[styles.radioIcon, { color: COLORS.Green }]}
             />
             <Text style={styles.radioText}>Đã chọn</Text>
           </View>
@@ -224,19 +228,19 @@ const SeatBookingScreen = ({navigation, route}: any) => {
           bounces={false}
           contentContainerStyle={styles.containerGap24}
           showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity onPress={() => setSelectedDateIndex(index)}>
                 <View
                   style={[
                     styles.dateContainer,
                     index == 0
-                      ? {marginLeft: SPACING.space_24}
+                      ? { marginLeft: SPACING.space_24 }
                       : index == dateArray.length - 1
-                      ? {marginRight: SPACING.space_24}
-                      : {},
+                        ? { marginRight: SPACING.space_24 }
+                        : {},
                     index == selectedDateIndex
-                      ? {backgroundColor: COLORS.Green}
+                      ? { backgroundColor: COLORS.Green }
                       : {},
                   ]}>
                   <Text style={styles.dateText}>{item.date}</Text>
@@ -256,19 +260,19 @@ const SeatBookingScreen = ({navigation, route}: any) => {
           bounces={false}
           contentContainerStyle={styles.containerGap24}
           showsHorizontalScrollIndicator={false}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             return (
               <TouchableOpacity onPress={() => setSelectedTimeIndex(index)}>
                 <View
                   style={[
                     styles.timeContainer,
                     index == 0
-                      ? {marginLeft: SPACING.space_24}
+                      ? { marginLeft: SPACING.space_24 }
                       : index == dateArray.length - 1
-                      ? {marginRight: SPACING.space_24}
-                      : {},
+                        ? { marginRight: SPACING.space_24 }
+                        : {},
                     index == selectedTimeIndex
-                      ? {backgroundColor: COLORS.Green}
+                      ? { backgroundColor: COLORS.Green }
                       : {},
                   ]}>
                   <Text style={styles.timeText}>{item}</Text>

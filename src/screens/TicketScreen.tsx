@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Text,
   View,
@@ -8,7 +8,6 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import EncryptedStorage from 'react-native-encrypted-storage';
 import AppHeader from '../components/AppHeader';
 import {
   BORDERRADIUS,
@@ -19,17 +18,23 @@ import {
 } from '../theme/theme';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomIcon from '../components/CustomIcon';
+import Auth from '../firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
-const TicketScreen = ({navigation, route}: any) => {
+const TicketScreen = ({ navigation, route }: any) => {
   const [ticketData, setTicketData] = useState<any>(route.params);
 
   useEffect(() => {
     (async () => {
       try {
-        const ticket = await EncryptedStorage.getItem('ticket');
-        if (ticket !== undefined && ticket !== null) {
-          setTicketData(JSON.parse(ticket));
+        const tmpTicket = (await firestore().collection('user_ticket').doc(Auth.getCurrentUser()?.uid).get()).data();
+        if (tmpTicket?.ticket !== undefined && tmpTicket?.ticket !== null) {
+          const ticket = JSON.parse(tmpTicket?.ticket);
+          console.log(ticket);
+          setTicketData(ticket);
+
         }
+        console.log(ticketData);
       } catch (error) {
         console.error('Something went wrong while getting Data', error);
       }
@@ -64,11 +69,11 @@ const TicketScreen = ({navigation, route}: any) => {
           action={() => navigation.goBack()}
         />
       </View>
-      <View style={{height: 20}}></View>
+      <View style={{ height: 20 }}></View>
 
       <View style={styles.ticketContainer}>
         <ImageBackground
-          source={{uri: ticketData?.ticketImage}}
+          source={{ uri: ticketData?.ticketImage }}
           style={styles.ticketBGImage}>
           <LinearGradient
             colors={[COLORS.OrangeRGBA0, COLORS.Green]}
@@ -76,12 +81,12 @@ const TicketScreen = ({navigation, route}: any) => {
             <View
               style={[
                 styles.blackCircle,
-                {position: 'absolute', bottom: -40, left: -40},
+                { position: 'absolute', bottom: -40, left: -40 },
               ]}></View>
             <View
               style={[
                 styles.blackCircle,
-                {position: 'absolute', bottom: -40, right: -40},
+                { position: 'absolute', bottom: -40, right: -40 },
               ]}></View>
           </LinearGradient>
         </ImageBackground>
@@ -91,12 +96,12 @@ const TicketScreen = ({navigation, route}: any) => {
           <View
             style={[
               styles.blackCircle,
-              {position: 'absolute', top: -40, left: -40},
+              { position: 'absolute', top: -40, left: -40 },
             ]}></View>
           <View
             style={[
               styles.blackCircle,
-              {position: 'absolute', top: -40, right: -40},
+              { position: 'absolute', top: -40, right: -40 },
             ]}></View>
           <View style={styles.ticketDateContainer}>
             <View style={styles.subtitleContainer}>

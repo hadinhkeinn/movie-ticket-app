@@ -3,6 +3,7 @@ import React from "react";
 import TabNavigator from "./TabNavigator";
 import MovieDetailsScreen from '../screens/MovieDetailsScreen';
 import SeatBookingScreen from '../screens/SeatBookingScreen';
+import EditUserProfileScreen from '../screens/EditUserProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,11 @@ const MainNavigator = () => {
                 name="SeatBooking"
                 component={SeatBookingScreen}
                 options={{ animation: 'slide_from_bottom' }}
+            />
+            <Stack.Screen
+                name="EditProfile"
+                component={EditUserProfileScreen}
+                options={{ animation: 'slide_from_right' }}
             />
         </Stack.Navigator>
     );
